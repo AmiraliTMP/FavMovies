@@ -1,0 +1,2809 @@
+openapi: "3.0.0"
+
+info:
+  title: "Node Js API Project for mongodb"
+  version: "1.0.0"
+  description: "API documentation using Swagger"
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: "http"
+      scheme: "bearer"
+      bearerFormat: "JWT"
+
+  schemas:
+    Genre:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "66f3a1b2c3d4e5f678901234"
+
+        name:
+          type: string
+          example: "Action"
+
+        slug:
+          type: string
+          example: "action"
+
+        image:
+          type: string
+          example: "66f3a1b2c3d4e5f678901235"
+
+        createdAt:
+          type: string
+          format: date-time
+
+        updatedAt:
+          type: string
+          format: date-time
+
+    Movie:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "66f3a1b2c3d4e5f678901236"
+
+        title:
+          type: string
+          example: "Inception"
+
+        originalTitle:
+          type: string
+          nullable: true
+          example: "Inception"
+
+        slug:
+          type: string
+          example: "inception"
+
+        description:
+          type: string
+          nullable: true
+          example: "A skilled thief who steals secrets through dream-sharing technology is given a chance to erase his past."
+
+        poster:
+          type: string
+          nullable: true
+          example: "66f3a1b2c3d4e5f678901237"
+
+        backdrop:
+          type: string
+          nullable: true
+          example: "66f3a1b2c3d4e5f678901238"
+
+        trailer:
+          type: string
+          nullable: true
+          example: "https://www.youtube.com/watch?v=YoHD9XEInc0"
+
+        releaseDate:
+          type: string
+          format: date
+          nullable: true
+          example: "2010-07-16"
+
+        duration:
+          type: number
+          nullable: true
+          example: 148
+
+        ageRating:
+          type: string
+          nullable: true
+          example: "PG-13"
+
+        rating:
+          type: number
+          minimum: 0
+          maximum: 10
+          example: 8.8
+
+        voteCount:
+          type: number
+          minimum: 0
+          example: 2500000
+
+        genres:
+          type: array
+          items:
+            type: string
+          example:
+            - "66f3a1b2c3d4e5f678901234"
+            - "66f3a1b2c3d4e5f678901239"
+
+        director:
+          type: string
+          nullable: true
+          example: "66f3a1b2c3d4e5f678901240"
+
+        writers:
+          type: array
+          items:
+            type: string
+          example:
+            - "66f3a1b2c3d4e5f678901241"
+            - "66f3a1b2c3d4e5f678901242"
+
+        actors:
+          type: array
+          items:
+            type: string
+          example:
+            - "66f3a1b2c3d4e5f678901243"
+            - "66f3a1b2c3d4e5f678901244"
+
+        countries:
+          type: array
+          items:
+            type: string
+          example:
+            - "United States"
+            - "United Kingdom"
+
+        languages:
+          type: array
+          items:
+            type: string
+          example:
+            - "English"
+
+        budget:
+          type: number
+          minimum: 0
+          nullable: true
+          example: 160000000
+
+        revenue:
+          type: number
+          minimum: 0
+          nullable: true
+          example: 839000000
+
+        status:
+          type: string
+          enum:
+            - upcoming
+            - released
+            - ended
+          example: "released"
+
+        createdAt:
+          type: string
+          format: date-time
+
+        updatedAt:
+          type: string
+          format: date-time
+
+security:
+  - bearerAuth: []
+
+servers:
+  - url: "http://localhost:3008"
+  - url: "https://barsara.maksiran.ir"
+
+# apis:
+
+#    - routes: ["./src/routes/**/*.js"]
+
+paths:
+  /api/file/v1/upload:
+    post:
+      summary: Upload a file
+      description: Upload a file to the server with details such as name, encoding, mimetype, and size.
+      tags:
+        - File
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: The file to upload.
+                type:
+                  type: string
+                  description: (Optional) Type of the file being uploaded.
+      responses:
+        200:
+          description: File uploaded successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      fieldName:
+                        type: string
+                      originalName:
+                        type: string
+                      encoding:
+                        type: string
+                      mimetype:
+                        type: string
+                      destination:
+                        type: string
+                      fileName:
+                        type: string
+                      path:
+                        type: string
+                      size:
+                        type: integer
+                  message:
+                    type: string
+        400:
+          description: Bad Request - Invalid file or file size exceeds 6MB.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+
+  /api/file/v1/upload-admin:
+    post:
+      summary: Upload a file as an admin
+      description: Upload a file to the server with details such as name, encoding, mimetype, and size.
+      tags:
+        - File
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: The file to upload.
+                type:
+                  type: string
+                  description: (Optional) Type of the file being uploaded.
+      responses:
+        200:
+          description: File uploaded successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      fieldName:
+                        type: string
+                      originalName:
+                        type: string
+                      encoding:
+                        type: string
+                      mimetype:
+                        type: string
+                      destination:
+                        type: string
+                      fileName:
+                        type: string
+                      path:
+                        type: string
+                      size:
+                        type: integer
+                  message:
+                    type: string
+        400:
+          description: Bad Request - Invalid file or file size exceeds 6MB.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+
+  /{file_path}:
+    get:
+      summary: Download a file
+      description: Retrieve a file from the server using its file path.
+      tags:
+        - File
+      parameters:
+        - name: file_path
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The path of the file to download.
+      responses:
+        200:
+          description: File retrieved successfully.
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        400:
+          description: Bad Request - Invalid file path.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+        404:
+          description: Not Found - File does not exist.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+
+  /api/admin/v1/register-admin:
+    post:
+      summary: Register a new admin
+      tags:
+        - Admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - userName
+                - password
+                - permissions
+                - mobile
+              properties:
+                firstName:
+                  type: string
+                  example: Ali
+                  description: Admin's first name
+                lastName:
+                  type: string
+                  example: Ahmadi
+                  description: Admin's last name
+                userName:
+                  type: string
+                  example: Ali_Ahmad20
+                  description: Admin's username
+                password:
+                  type: string
+                  example: "1234@ahmadi"
+                  description: Admin's password
+                permissions:
+                  type: string
+                  example: "fullaccess"
+                  description: Admin's permissions
+                mobile:
+                  type: string
+                  example: "09123456789"
+                  description: Admin's mobile number
+      responses:
+        "200":
+          description: Admin successfully registered
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Admin creation was successful."
+                  data:
+                    type: object
+                    properties:
+                      firstName:
+                        type: string
+                        example: Ali
+                      lastName:
+                        type: string
+                        example: Ahmadi
+                      userName:
+                        type: string
+                        example: Ali_Ahmad20
+                      mobile:
+                        type: string
+                        example: "09123456789"
+                      permissions:
+                        type: string
+                        example: fullaccess
+
+  /api/admin/v1/login:
+    post:
+      summary: Admin login with username and password
+      tags:
+        - Admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userName:
+                  type: string
+                  description: Admin's userName
+                  example: Ali_Ahmad20
+                password:
+                  type: string
+                  description: Admin's password
+                  example: "1234@ahmadi"
+      responses:
+        "200":
+          description: Admin logged in successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: JWT token for authenticated requests
+        "401":
+          description: Unauthorized - Invalid credentials
+        "400":
+          description: Bad request - Missing fields
+
+  /api/admin/v1/get-admin-profile-by-admin/{adminId}:
+    get:
+      summary: Get admin by ID
+      tags:
+        - Admin
+      parameters:
+        - in: path
+          name: adminId
+          required: true
+          description: Admin's ID to retrieve
+          schema:
+            type: string
+
+      responses:
+        "200":
+          description: Admin retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  firstName:
+                    type: string
+                    example: Ali
+                    description: Admin's firstName
+                  lastName:
+                    type: string
+                    example: Ahmadi
+                    description: Admin's lastName
+                  userName:
+                    type: string
+                    example: Ali_Ahmad20
+                    description: Admin's userName
+                  password:
+                    type: string
+                    example: "1234@ahmadi"
+                    description: Admin's password
+        "404":
+          description: Admin not found
+        "401":
+          description: Unauthorized - Authentication required
+  /api/admin/v1/get-user-profile-by-admin/{userId}:
+    get:
+      summary: Get user by ID
+      tags:
+        - Admin
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          description: user's ID to retrieve
+          schema:
+            type: string
+
+      responses:
+        "200":
+          description: user retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  firstName:
+                    type: string
+                    example: Ali
+                    description: Admin's firstName
+                  lastName:
+                    type: string
+                    example: Ahmadi
+                    description: Admin's lastName
+                  userName:
+                    type: string
+                    example: Ali_Ahmad20
+                    description: Admin's userName
+                  password:
+                    type: string
+                    example: "1234@ahmadi"
+                    description: Admin's password
+        "404":
+          description: user not found
+        "401":
+          description: Unauthorized - Authentication required
+
+  /api/admin/v1/edit-admin-profile-by-admin:
+    put:
+      summary: put a admin
+      tags:
+        - Admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - userName
+              properties:
+                adminId:
+                  type: string
+                  example: "675683f91f5418245db3502c"
+                  description: Admin's Id
+                firstName:
+                  type: string
+                  example: Ali
+                  description: admin's firstName
+                lastName:
+                  type: string
+                  example: Ahmadi
+                  description: Admin's lastName
+                userName:
+                  type: string
+                  example: Ali_Ahmad20
+                  description: Admin's userName
+                password:
+                  type: string
+                  example: "1234@ahmadi"
+                  description: Admin's password
+                permissions:
+                  type: string
+                  example: "fullaccess"
+                  description: Admin's permissions
+      responses:
+        "200":
+          description: Admin successfully updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  firstName:
+                    type: string
+                    example: Ali
+                    description: Admin's firstName
+                  lastName:
+                    type: string
+                    example: Ahmadi
+                    description: Admin's lastName
+                  userName:
+                    type: string
+                    example: Ali_Ahmad20
+                    description: Admin's userName
+                  password:
+                    type: string
+                    example: "1234@ahmadi"
+                    description: Admin's password
+        "404":
+          description: Admin not found
+        "401":
+          description: Unauthorized - Authentication required
+
+  /api/admin/v1/edit-my-profile:
+    put:
+      summary: put a admin by admin
+      tags:
+        - Admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - userName
+              properties:
+                firstName:
+                  type: string
+                  example: Ali
+                  description: Admin's firstName
+                lastName:
+                  type: string
+                  example: Ahmadi
+                  description: Admin's lastName
+                userName:
+                  type: string
+                  example: Ali_Ahmad20
+                  description: Admin's userName
+                password:
+                  type: string
+                  example: "1234@ahmadi"
+                  description: Admin's password
+      responses:
+        "200":
+          description: Admin successfully updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  firstName:
+                    type: string
+                    example: Ali
+                    description: Admin's firstName
+                  lastName:
+                    type: string
+                    example: Ahmadi
+                    description: Admin's lastName
+                  userName:
+                    type: string
+                    example: Ali_Ahmad20
+                    description: Admin's userName
+                  password:
+                    type: string
+                    example: "1234@ahmadi"
+                    description: Admin's password
+        "404":
+          description: Admin not found
+        "401":
+          description: Unauthorized - Authentication required
+
+  /api/admin/v1/delete-my-profile:
+    delete:
+      summary: delete my profile
+      tags:
+        - Admin
+
+      responses:
+        "200":
+          description: Admin successfully deleted
+        "404":
+          description: Admin not found
+        "401":
+          description: Unauthorized - Authentication required
+
+  /api/admin/v1/delete-by-admin/{adminId}:
+    delete:
+      summary: Delete a admin
+      tags:
+        - Admin
+
+      parameters:
+        - in: path
+          name: adminId
+          description: Admin's ID to delete
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Admin successfully deleted
+        "404":
+          description: Admin not found
+        "401":
+          description: Unauthorized - Authentication required
+
+  /api/admin/v1/get-admin-list:
+    get:
+      tags:
+        - Admin
+      summary: Get all admins
+      description: Returns a paginated or full list of all active (non-deleted) admins. Supports optional search query.
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of results per page (only if pagination is true)
+          required: false
+          schema:
+            type: integer
+            example: 20
+        - name: page
+          in: query
+          description: Page number for paginated results
+          required: false
+          schema:
+            type: integer
+            example: 1
+        - name: search
+          in: query
+          description: Search by admin username (case-insensitive partial match)
+          required: false
+          schema:
+            type: string
+            example: mohsen
+        - name: pagination
+          in: query
+          description: Whether to paginate the response (`true` or `false`)
+          required: false
+          schema:
+            type: string
+            example: "true"
+      responses:
+        "200":
+          description: List of admins retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "The list of admins was successfully found."
+                  data:
+                    type: object
+                    properties:
+                      docs:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            adminId:
+                              type: string
+                              example: "675683f91f5418245db3502c"
+                            firstName:
+                              type: string
+                              example: "mohsen"
+                            lastName:
+                              type: string
+                              example: "akbari"
+                            userName:
+                              type: string
+                              example: "mohsen_akbari60"
+                      totalDocs:
+                        type: integer
+                        example: 120
+                      page:
+                        type: integer
+                        example: 1
+                      limit:
+                        type: integer
+                        example: 20
+        "401":
+          description: Unauthorized - Authentication required
+        "500":
+          description: Internal server error
+
+  /api/admin/v1/get-my-profile:
+    get:
+      summary: Get admin by token
+      tags:
+        - Admin
+      responses:
+        "200":
+          description: Admin found based on token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  firstName:
+                    type: string
+                    example: Ali
+                    description: Admin's firstName
+                  lastName:
+                    type: string
+                    example: Ahmadi
+                    description: Admin's lastName
+                  userName:
+                    type: string
+                    example: Ali_Ahmad20
+                    description: Admin's userName
+                  password:
+                    type: string
+                    example: "1234@ahmadi"
+                    description: Admin's password
+        "401":
+          description: Unauthorized - Authentication required
+
+  /api/user/v1/send-otp:
+    post:
+      summary: Send activation code for user
+      tags:
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mobile:
+                  type: string
+                  example: "9121111111"
+                  description: Mobile number to send activation code
+      responses:
+        "200":
+          description: Activation code sent successfully
+
+        "400":
+          description: Bad request - Validation failed
+        "500":
+          description: Internal server error
+
+  /api/user/v1/submit-otp:
+    post:
+      summary: loginOTP for user login
+      tags:
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sentCode:
+                  type: string
+                  example: "123456"
+                  description: OTP sent to the user
+                mobile:
+                  type: string
+                  example: "9121111111"
+                  description: Mobile number of the user
+      responses:
+        "200":
+          description: OTP validated successfully
+        "400":
+          description: Invalid OTP or request
+        "500":
+          description: Internal server error
+
+  /api/ticket/v1/add-ticket-user:
+    post:
+      tags:
+        - Ticket
+      summary: Create a ticket as a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                subject:
+                  type: string
+                  description: The subject of the ticket
+                  example: Technical issue
+                description:
+                  type: string
+                  description: The description of the ticket
+                  example: My account is not working.
+      responses:
+        200:
+          description: Ticket created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+
+  /api/ticket/v1/get-my-ticket-list-user:
+    get:
+      tags:
+        - Ticket
+      summary: Get the list of tickets for a user
+      responses:
+        200:
+          description: List of tickets for the user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TicketListResponse"
+
+  /api/ticket/v1/get-ticket-messages-user/{id}:
+    get:
+      tags:
+        - Ticket
+      summary: Get messages for a specific ticket for a user
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the ticket
+      responses:
+        200:
+          description: Messages for the ticket
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageListResponse"
+
+  /api/ticket/v1/get-my-ticket-list-admin:
+    get:
+      tags:
+        - Ticket
+      summary: Get the list of tickets for an admin
+      description: Retrieve tickets created by the authenticated admin. Supports pagination.
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            example: 40
+          description: "Number of tickets per page (default: 40)"
+        - name: page
+          in: query
+          schema:
+            type: integer
+            example: 1
+          description: "The page number for paginated results (default: 1)"
+        - name: pagination
+          in: query
+          schema:
+            type: boolean
+            example: true
+          description: "Enable or disable pagination (default: true)"
+        - name: search
+          in: query
+          schema:
+            type: string
+            example: ariakia
+          description: search for search
+      responses:
+        "200":
+          description: List of tickets for the admin
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Tickets retrieved successfully"
+                  data:
+                    $ref: "#/components/schemas/TicketListResponse"
+        "401":
+          description: Unauthorized - Admin authentication required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "Unauthorized - Admin authentication required"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "An error occurred while retrieving tickets"
+
+  /api/ticket/v1/get-ticket-messages-admin/{id}:
+    get:
+      tags:
+        - Ticket
+      summary: Get messages for a specific ticket for an admin
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the ticket
+      responses:
+        200:
+          description: Messages for the ticket
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageListResponse"
+  /api/ticket/v1/user-answer-ticket:
+    put:
+      tags:
+        - Ticket
+      summary: Add a user's answer to a ticket
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ticket_id:
+                  type: string
+                  description: The ID of the ticket
+                  example: 63fcb10e80f6fc001c39e3a3
+                description:
+                  type: string
+                  description: The user's message
+                  example: I need more details about this.
+      responses:
+        200:
+          description: User's answer added successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+
+  /api/ticket/v1/admin-answer-ticket:
+    put:
+      tags:
+        - Ticket
+      summary: Add an admin's answer to a ticket
+      description: Admin can respond to a ticket and optionally close it.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - ticket_id
+                - description
+              properties:
+                ticket_id:
+                  type: string
+                  description: The ID of the ticket
+                  example: "63fcb10e80f6fc001c39e3a3"
+                description:
+                  type: string
+                  description: The admin's response message
+                  example: "Please follow the provided instructions."
+      responses:
+        "200":
+          description: Admin's answer added successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Ticket answered successfully"
+                  data:
+                    type: object
+                    properties:
+                      ticket_id:
+                        type: string
+                        example: "63fcb10e80f6fc001c39e3a3"
+                      description:
+                        type: string
+                        example: "Please follow the provided instructions."
+        "404":
+          description: Ticket not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "Ticket not found"
+        "400":
+          description: Bad request (missing required fields)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "Missing ticket_id or description"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "An error occurred while updating the ticket"
+
+  /api/ticket/v1/admin--ticket-list-delete:
+    delete:
+      tags:
+        - Ticket
+      summary: Soft delete multiple tickets by admin
+      description: Admin can mark multiple tickets as deleted by providing their IDs.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - tickets
+              properties:
+                tickets:
+                  type: array
+                  description: List of ticket IDs to be marked as deleted
+                  items:
+                    type: string
+                    example: "63fcb10e80f6fc001c39e3a3"
+      responses:
+        "200":
+          description: Tickets successfully marked as deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Tickets deleted successfully."
+        "400":
+          description: Bad request (invalid request format)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "IDs must be sent in an array"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "An error occurred while deleting tickets"
+
+  /api/package/v1/create-package:
+    post:
+      tags:
+        - package
+      summary: Create a new package
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                price:
+                  type: number
+                days:
+                  type: number
+                description:
+                  type: string
+              required:
+                - name
+                - price
+                - days
+      responses:
+        201:
+          description: Package created successfully.
+        400:
+          description: Bad request, duration or price is repetitive.
+        500:
+          description: Internal server error.
+
+  /api/package/v1/update-package:
+    put:
+      tags:
+        - package
+      summary: Update a package
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                name:
+                  type: string
+                price:
+                  type: number
+                days:
+                  type: number
+                description:
+                  type: string
+              required:
+                - id
+        description: Package details to update.
+      responses:
+        200:
+          description: Package updated successfully.
+        404:
+          description: Package or duration not found.
+        500:
+          description: Internal server error.
+
+  /api/package/v1/get-all-packages:
+    get:
+      tags:
+        - package
+      summary: Retrieve all packages with pagination and search
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 40
+          description: The number of packages to return per page.
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+          description: The page number to retrieve.
+        - in: query
+          name: search
+          schema:
+            type: string
+          description: Search packages by name (case-insensitive).
+        - in: query
+          name: pagination
+          schema:
+            type: boolean
+          description: having pagination or no .
+      responses:
+        200:
+          description: Successfully retrieved the list of packages.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "List of packages"
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Package"
+        400:
+          description: Bad request due to invalid query parameters.
+        500:
+          description: Internal server error.
+
+  /api/package/v1/get-package-by-id/{id}:
+    get:
+      tags:
+        - package
+      summary: Retrieve a package by ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the package to retrieve.
+      responses:
+        200:
+          description: Package details.
+        404:
+          description: Package not found.
+        500:
+          description: Internal server error.
+
+  /api/package/v1/get-all-packages-user:
+    get:
+      summary: Get all packages
+      description: Retrieves a list of all packages available in the system.
+      operationId: getAllPackages
+      tags:
+        - package
+      responses:
+        "200":
+          description: A list of packages was successfully retrieved.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: A message in Farsi and English describing the response.
+                    example: "لیست بسته ها | List of packages"
+                  data:
+                    type: array
+                    description: An array of packages.
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: The unique ID of the package.
+                          example: "1234"
+                        name:
+                          type: string
+                          description: The name of the package.
+                          example: "Basic Package"
+                        description:
+                          type: string
+                          description: A short description of the package.
+                          example: "Includes basic features."
+  /api/package/v1/delete-package:
+    delete:
+      summary: Soft delete a package by ID
+      tags:
+        - package
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: The unique ID of the package to be deleted.
+                  example: "12345"
+      responses:
+        "200":
+          description: The package has been successfully deleted (soft delete).
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "The package has been successfully deleted"
+                  data:
+                    type: object
+                    properties:
+                      package:
+                        $ref: "#/components/schemas/Package"
+        "404":
+          description: Package not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "The package is not found"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "An error occurred while deleting the package"
+
+  /api/package/v1/delete-package-selected:
+    delete:
+      tags:
+        - package
+      summary: Delete multiple selected packages by admin
+      description: Admin can delete multiple packages by providing their IDs.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - packages
+              properties:
+                packages:
+                  type: array
+                  description: List of package IDs to be deleted
+                  items:
+                    type: string
+                    example: "60f7fcd9c9e77b23ac4d4a9b"
+      responses:
+        "200":
+          description: Packages successfully deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Packages successfully deleted"
+        "400":
+          description: Bad request (invalid or missing package IDs)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "IDs must be sent in an array"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "An error occurred while deleting packages"
+
+  /api/notification/v1/send-notification:
+    post:
+      tags:
+        - Notification
+      summary: Create a new notification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: New Notification
+                body:
+                  type: string
+                  example: You have a new update.
+                reciever:
+                  type: object
+                  properties:
+                    user_id:
+                      type: string
+                      example: 64f15f1c2e5b3c001cf6ab03
+      responses:
+        201:
+          description: Notification created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                    example: اعلان با موفقیت ساخته شد
+                  data:
+                    type: object
+        400:
+          description: Bad request
+  # /api/notification/v1/send-notification-to-users:
+  #  post:
+  #   tags:
+  #     - Notification
+  #   summary: Send a broadcast notification to users by admin
+  #   requestBody:
+  #     required: true
+  #     content:
+  #       application/json:
+  #         schema:
+  #           type: object
+  #           required:  # ✅ Define required fields
+  #             - title
+  #             - body
+  #             - date
+  #           properties:
+  #             title:
+  #               type: string
+  #               example: System Update
+  #               description: The title of the notification.
+  #             body:
+  #               type: string
+  #               example: The system will undergo maintenance tonight.
+  #               description: The message body of the notification.
+  #             date:
+  #               type: integer
+  #               example: 1630000000
+  #               description: UNIX timestamp (seconds) for scheduling the notification.
+  #   responses:
+  #     200:
+  #       description: Broadcast notification sent successfully
+  #       content:
+  #         application/json:
+  #           schema:
+  #             type: object
+  #             properties:
+  #               success:
+  #                 type: boolean
+  #                 example: true
+  #               message:
+  #                 type: string
+  #                 example: Notifications have been sent.
+  #     400:
+  #       description: Bad request (missing or invalid parameters)
+  #       content:
+  #         application/json:
+  #           schema:
+  #             type: object
+  #             properties:
+  #               success:
+  #                 type: boolean
+  #                 example: false
+  #               error:
+  #                 type: string
+  #                 example: Invalid request parameters.
+  #     500:
+  #       description: Internal server error
+  #       content:
+  #         application/json:
+  #           schema:
+  #             type: object
+  #             properties:
+  #               success:
+  #                 type: boolean
+  #                 example: false
+  #               error:
+  #                 type: string
+  #                 example: Server encountered an unexpected error.
+
+  /api/notification/v1/send-notification-to-users:
+    post:
+      tags:
+        - Notification
+      summary: Send notifications to selected users by admin
+      description: Admin can send notifications to specific users based on their IDs.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+                - body
+                - users
+              properties:
+                title:
+                  type: string
+                  example: System Update
+                  description: The title of the notification.
+                body:
+                  type: string
+                  example: The system will undergo maintenance tonight.
+                  description: The message body of the notification.
+                users:
+                  type: array
+                  description: List of user IDs to send notifications to.
+                  items:
+                    type: string
+                    example: "60f7fcd9c9e77b23ac4d4a9b"
+      responses:
+        "200":
+          description: Notifications sent successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Notification successfully sent"
+        "400":
+          description: Bad request (missing or invalid parameters)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "Invalid request parameters"
+        "404":
+          description: One or more users not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "Some users were not found"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "Server encountered an unexpected error"
+
+  /api/notification/v1/get-detail-notification-user/{id}:
+    get:
+      tags:
+        - Notification
+      summary: Get notification details for a user
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Notification ID
+          schema:
+            type: string
+            example: 64f15f1c2e5b3c001cf6ab03
+      responses:
+        200:
+          description: Notification details retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                    example: اعلان با موفقیت یافت شد
+                  data:
+                    type: object
+        404:
+          description: Notification not found
+
+  /api/notification/v1/get-detail-notification-admin/{id}:
+    get:
+      tags:
+        - Notification
+      summary: Get notification details for an admin
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Notification ID
+          schema:
+            type: string
+            example: 64f15f1c2e5b3c001cf6ab03
+      responses:
+        200:
+          description: Notification details retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                    example: اعلان با موفقیت یافت شد
+                  data:
+                    type: object
+        404:
+          description: Notification not found
+
+  /api/notification/v1/get-notification-list-user:
+    get:
+      tags:
+        - Notification
+      summary: Get all notifications for a user
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 12
+      responses:
+        200:
+          description: List of notifications retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                    example: اعلان ها با موفقیت یافت شدند
+                  data:
+                    type: object
+        404:
+          description: Notifications not found
+
+  /api/notification/v1/get-notification-list-user-by-admin/{id}:
+    get:
+      tags:
+        - Notification
+      summary: Get all users notifications for a admin
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 12
+        - in: path
+          name: id
+          required: true
+          description: user's ID to retrieve
+          schema:
+            type: string
+
+      responses:
+        200:
+          description: List of notifications retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                    example: اعلان ها با موفقیت یافت شدند
+                  data:
+                    type: object
+        404:
+          description: Notifications not found
+
+  /api/notification/v1/get-notification-list-admin:
+    get:
+      tags:
+        - Notification
+      summary: Get all notifications for an admin
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 12
+        - name: search
+          in: query
+          required: false
+          schema:
+            type: string
+            default: new
+      responses:
+        200:
+          description: List of notifications retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                    example: اعلان ها با موفقیت یافت شدند
+                  data:
+                    type: object
+        404:
+          description: Notifications not found
+
+  /api/notification/v1/delete-notification-admin:
+    delete:
+      tags:
+        - Notification
+      summary: Delete multiple notifications by admin
+      description: Admin can delete multiple notifications by providing their IDs.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - notifications
+              properties:
+                notifications:
+                  type: array
+                  description: List of notification IDs to be deleted
+                  items:
+                    type: string
+                    example: "60f7fcd9c9e77b23ac4d4a9b"
+      responses:
+        "200":
+          description: Notifications successfully deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Notifications successfully deleted"
+        "400":
+          description: Bad request (missing or invalid notification IDs)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "Invalid request parameters"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "An error occurred while deleting notifications"
+  /api/notification/v1/delete-notification-user:
+    delete:
+      tags:
+        - Notification
+      summary: Delete a user notification by admin
+      description: Admin can delete a specific user notification by providing its ID.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - notification_id
+              properties:
+                notification_id:
+                  type: string
+                  description: The ID of the notification to be deleted
+                  example: "60f7fcd9c9e77b23ac4d4a9b"
+      responses:
+        "200":
+          description: Notification successfully deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Notification successfully deleted"
+        "404":
+          description: Notification not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "Notification didn't found"
+        "400":
+          description: Bad request (invalid request parameters)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "Invalid request parameters"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "An error occurred while deleting the notification"
+
+  /api/fcm/v1/save-push-token-user:
+    post:
+      tags:
+        - Push Token
+      summary: Save push token for a user
+      description: Stores the Firebase push token along with a device ID for a logged-in user. Supports multiple tokens per user.
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - push_token
+                - device_id
+              properties:
+                push_token:
+                  type: string
+                  description: Firebase push token for the user
+                  example: "e9lksjdf0w9e8r0239rlsdjf"
+                device_id:
+                  type: string
+                  description: Unique device identifier for the user's device
+                  example: "device-12345"
+      responses:
+        200:
+          description: Push token saved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "توکن مربوطه با موفقیت ست شد"
+                  data:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        example: "60d5f9b3f9d8b50017a5b739"
+                      push_token:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            device_id:
+                              type: string
+                              example: "device-12345"
+                            push_token:
+                              type: string
+                              example: "e9lksjdf0w9e8r0239rlsdjf"
+        400:
+          description: Invalid push token or device_id
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "توکن فایربیس وارد شده معتبر نیست"
+        404:
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "هیچ کاربری پیدا نشد"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "خطای سرور داخلی"
+
+  /api/fcm/v1/save-push-token-admin:
+    post:
+      summary: Save push token for an admin
+      description: Saves the Firebase push token for a logged-in admin.
+      tags:
+        - Push Token
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PushToken"
+      responses:
+        200:
+          description: Successfully saved push token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Push token saved successfully!"
+        400:
+          description: Invalid push token
+        404:
+          description: Admin not found
+        500:
+          description: Internal server error
+
+  /api/genre/v1/add-genre:
+    post:
+      tags:
+        - Genre
+      summary: Create a new genre
+      description: Create a new genre with name and slug.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - slug
+              properties:
+                name:
+                  type: string
+                  example: Action
+                  description: Name of the genre
+                slug:
+                  type: string
+                  example: action
+                  description: URL-friendly slug (will be converted to lowercase)
+      responses:
+        "200":
+          description: Genre created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Le genre a été créé avec succès | genre created successfully"
+                  data:
+                    $ref: "#/components/schemas/Genre"
+        "400":
+          description: Bad Request - Validation failed
+        "500":
+          description: Internal server error
+
+  /api/genre/v1/get-all-genres:
+    get:
+      tags:
+        - Genre
+      summary: Get all genres
+      description: Retrieve a paginated list of all genres.
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: Page number
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+          description: Number of items per page
+      responses:
+        "200":
+          description: Genres retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Les genres ont été trouvés avec succès | genres found successfully"
+                  data:
+                    type: object
+                    properties:
+                      docs:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Genre"
+                      totalDocs:
+                        type: integer
+                        example: 25
+                      limit:
+                        type: integer
+                        example: 10
+                      page:
+                        type: integer
+                        example: 1
+                      totalPages:
+                        type: integer
+                        example: 3
+                      hasNextPage:
+                        type: boolean
+                        example: true
+                      hasPrevPage:
+                        type: boolean
+                        example: false
+        "400":
+          description: Bad Request - Invalid page or limit
+        "500":
+          description: Internal server error
+
+  /api/genre/v1/get-genre-by-id/{id}:
+    get:
+      tags:
+        - Genre
+      summary: Get genre by ID
+      description: Retrieve details of a specific genre by its ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Genre ID (MongoDB ObjectId)
+          example: "66f3a1b2c3d4e5f678901234"
+      responses:
+        "200":
+          description: Genre found successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Les détails du genre ont été trouvés avec succès | genre details found successfully"
+                  data:
+                    $ref: "#/components/schemas/Genre"
+        "400":
+          description: Bad Request - Invalid ID or genre not found
+        "500":
+          description: Internal server error
+
+  /api/genre/v1/update-genre/{id}:
+    patch:
+      tags:
+        - Genre
+      summary: Update a genre
+      description: Update an existing genre by ID. Name is required, slug is optional.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Genre ID
+          example: "66f3a1b2c3d4e5f678901234"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  example: Action Updated
+                  description: New name of the genre
+                slug:
+                  type: string
+                  example: action-updated
+                  description: New slug (optional)
+      responses:
+        "200":
+          description: Genre updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Le genre a été modifié avec succès | genre updated successfully"
+                  data:
+                    $ref: "#/components/schemas/Genre"
+        "400":
+          description: Bad Request - Validation failed or genre not found
+        "500":
+          description: Internal server error
+
+  /api/genre/v1/delete-genre/{id}:
+    delete:
+      tags:
+        - Genre
+      summary: Delete a genre
+      description: Delete a genre by its ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Genre ID
+          example: "66f3a1b2c3d4e5f678901234"
+      responses:
+        "200":
+          description: Genre deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Le genre a été supprimé avec succès | genre deleted successfully"
+                  data:
+                    $ref: "#/components/schemas/Genre"
+        "400":
+          description: Bad Request - Invalid ID or genre not found
+        "500":
+          description: Internal server error
+
+  /api/movies/v1/add-movie:
+    post:
+      tags:
+        - Movie
+      summary: Create a new movie
+      description: Create a new movie with its basic information, media, genres, cast, production information, and status.
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+                - slug
+              properties:
+                title:
+                  type: string
+                  example: "Inception"
+                  description: Movie title
+
+                originalTitle:
+                  type: string
+                  nullable: true
+                  example: "Inception"
+
+                slug:
+                  type: string
+                  example: "inception"
+
+                description:
+                  type: string
+                  nullable: true
+                  example: "A thief who steals corporate secrets through dream-sharing technology."
+
+                poster:
+                  type: string
+                  nullable: true
+                  example: "66f3a1b2c3d4e5f678901235"
+                  description: File ID
+
+                backdrop:
+                  type: string
+                  nullable: true
+                  example: "66f3a1b2c3d4e5f678901236"
+                  description: File ID
+
+                trailer:
+                  type: string
+                  nullable: true
+                  example: "https://www.youtube.com/watch?v=YoHD9XEInc0"
+
+                releaseDate:
+                  type: string
+                  format: date
+                  nullable: true
+                  example: "2010-07-16"
+
+                duration:
+                  type: number
+                  example: 148
+                  description: Duration in minutes
+
+                ageRating:
+                  type: string
+                  nullable: true
+                  example: "PG-13"
+
+                genres:
+                  type: array
+                  items:
+                    type: string
+                  example:
+                    - "66f3a1b2c3d4e5f678901234"
+
+                director:
+                  type: string
+                  nullable: true
+                  example: "66f3a1b2c3d4e5f678901238"
+
+                writers:
+                  type: array
+                  items:
+                    type: string
+                  example:
+                    - "66f3a1b2c3d4e5f678901239"
+
+                actors:
+                  type: array
+                  items:
+                    type: string
+                  example:
+                    - "66f3a1b2c3d4e5f678901240"
+
+                countries:
+                  type: array
+                  items:
+                    type: string
+                  example:
+                    - "United States"
+
+                languages:
+                  type: array
+                  items:
+                    type: string
+                  example:
+                    - "English"
+
+                budget:
+                  type: number
+                  nullable: true
+                  minimum: 0
+                  example: 160000000
+
+                revenue:
+                  type: number
+                  nullable: true
+                  minimum: 0
+                  example: 839000000
+
+                status:
+                  type: string
+                  enum:
+                    - upcoming
+                    - released
+                    - ended
+                  example: "released"
+
+      responses:
+        "200":
+          description: Movie created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Le film a été créé avec succès | movie created successfully"
+                  data:
+                    $ref: "#/components/schemas/Movie"
+
+        "400":
+          description: Bad Request - Validation failed
+
+        "500":
+          description: Internal server error
+
+  /api/movies/v1/get-all-movies:
+    get:
+      tags:
+        - Movie
+      summary: Get all movies
+      description: Retrieve a paginated list of movies.
+
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: Page number
+
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+          description: Number of movies per page
+
+      responses:
+        "200":
+          description: Movies retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Les films ont été trouvés avec succès | movies found successfully"
+                  data:
+                    type: object
+                    properties:
+                      docs:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Movie"
+                      totalDocs:
+                        type: integer
+                        example: 120
+                      limit:
+                        type: integer
+                        example: 10
+                      page:
+                        type: integer
+                        example: 1
+                      totalPages:
+                        type: integer
+                        example: 12
+
+        "400":
+          description: Bad Request - Invalid page or limit
+
+        "500":
+          description: Internal server error
+
+  /api/movies/v1/get-movie-details/{id}:
+    get:
+      tags:
+        - Movie
+      summary: Get movie by ID
+      description: Retrieve complete details of a specific movie.
+
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Movie ID
+          schema:
+            type: string
+          example: "66f3a1b2c3d4e5f678901234"
+
+      responses:
+        "200":
+          description: Movie details retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Les détails du film ont été trouvés avec succès | movie details found successfully"
+                  data:
+                    $ref: "#/components/schemas/Movie"
+
+        "400":
+          description: Bad Request - Invalid movie ID or movie not found
+
+        "500":
+          description: Internal server error
+
+  /api/movies/v1/edit-movie/{id}:
+    patch:
+      tags:
+        - Movie
+      summary: Update a movie
+      description: Update an existing movie by ID. Only supplied fields will be updated.
+
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Movie ID
+          schema:
+            type: string
+          example: "66f3a1b2c3d4e5f678901234"
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: "Inception"
+
+                originalTitle:
+                  type: string
+                  nullable: true
+                  example: "Inception"
+
+                slug:
+                  type: string
+                  example: "inception"
+
+                description:
+                  type: string
+                  nullable: true
+
+                poster:
+                  type: string
+                  nullable: true
+                  example: "66f3a1b2c3d4e5f678901235"
+
+                backdrop:
+                  type: string
+                  nullable: true
+                  example: "66f3a1b2c3d4e5f678901236"
+
+                trailer:
+                  type: string
+                  nullable: true
+                  example: "https://www.youtube.com/watch?v=YoHD9XEInc0"
+
+                releaseDate:
+                  type: string
+                  format: date
+                  nullable: true
+                  example: "2010-07-16"
+
+                duration:
+                  type: number
+                  example: 148
+
+                ageRating:
+                  type: string
+                  nullable: true
+                  example: "PG-13"
+
+                genres:
+                  type: array
+                  items:
+                    type: string
+
+                director:
+                  type: string
+                  nullable: true
+
+                writers:
+                  type: array
+                  items:
+                    type: string
+
+                actors:
+                  type: array
+                  items:
+                    type: string
+
+                countries:
+                  type: array
+                  items:
+                    type: string
+
+                languages:
+                  type: array
+                  items:
+                    type: string
+
+                budget:
+                  type: number
+                  nullable: true
+
+                revenue:
+                  type: number
+                  nullable: true
+
+                status:
+                  type: string
+                  enum:
+                    - upcoming
+                    - released
+                    - ended
+
+      responses:
+        "200":
+          description: Movie updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Le film a été modifié avec succès | movie updated successfully"
+                  data:
+                    $ref: "#/components/schemas/Movie"
+
+        "400":
+          description: Bad Request - Validation failed or movie not found
+
+        "500":
+          description: Internal server error
+
+  /api/movies/v1/delete-movie/{id}:
+    delete:
+      tags:
+        - Movie
+      summary: Delete a movie
+      description: Delete a movie by its ID.
+
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Movie ID
+          schema:
+            type: string
+          example: "66f3a1b2c3d4e5f678901234"
+
+      responses:
+        "200":
+          description: Movie deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Le film a été supprimé avec succès | movie deleted successfully"
+                  data:
+                    $ref: "#/components/schemas/Movie"
+
+        "400":
+          description: Bad Request - Invalid movie ID or movie not found
+
+        "500":
+          description: Internal server error
